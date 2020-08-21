@@ -11,9 +11,12 @@ const LOGIN = (user: TUser, action: TLogin) => {
   return action.user
 }
 
+const LOGOUT = () => null
+
 const userCases: ReducerCases<TState['user']> = {
   REGISTER,
-  LOGIN
+  LOGIN,
+  LOGOUT
 }
 
 /** tags will be stored in a store, tasks can select tags */

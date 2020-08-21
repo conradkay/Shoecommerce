@@ -13,10 +13,7 @@ import { List } from '@material-ui/core'
 
 import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
-import { Mutation, MutationResult } from 'react-apollo'
 import { openSnackbarA } from '../../store/actions/snackbar'
-import { LogoutMutation, LogoutMutationVariables } from '../../graphql/types'
-import { GQL_LOGOUT } from '../../graphql/mutations/auth'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -34,6 +31,13 @@ type TProps = WithStyles<typeof styles> & typeof actionCreators
 
 const CSettings = (props: TProps) => {
   const { classes } = props
+
+  const onSubmit = (e: React.MouseEvent) => {
+    e.preventDefault()
+    location.href = '#/'
+    location.reload()
+  }
+
   return (
     <>
       <div>
@@ -49,34 +53,17 @@ const CSettings = (props: TProps) => {
               primary="Signout"
               secondary="This action cannot be undone"
             />
-            <Mutation
-              mutation={GQL_LOGOUT}
-              onCompleted={() => {
-                location.href = '#/'
-                location.reload()
-              }}
-              onError={() => {
-                props.openSnackbar('You are stuck here forever, oops!', 'error')
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={e => onSubmit(e)}
+              style={{
+                marginLeft: 'auto'
               }}
             >
-              {(
-                logout: (args: { variables: LogoutMutationVariables }) => any,
-                result: MutationResult<LogoutMutation>
-              ) => {
-                return (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => logout({ variables: {} })}
-                    style={{
-                      marginLeft: 'auto'
-                    }}
-                  >
-                    Signout
-                  </Button>
-                )
-              }}
-            </Mutation>
+              Signout
+            </Button>
           </ListItem>
         </List>
       </div>

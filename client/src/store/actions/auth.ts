@@ -1,34 +1,46 @@
-import {UserFieldsFragment} from '../../graphql/types'
-import {RTDispatch} from '../../types/types'
-import {TUser} from '../../types/state'
-import {openSnackbarA} from './snackbar'
-import {initializeAuthState} from '../../API/initialize'
+import { RTDispatch } from '../../types/types'
+import { TUser } from '../../types/state'
+import { openSnackbarA } from './snackbar'
+import axios from 'axios'
 
-export const registerA = (user: UserFieldsFragment) => {
-  return (dispatch: RTDispatch) => {
-    if (user) {
-      const authUser = user
-
+export const registerA = (authData: {
+  username: string
+  password: string
+  email: string
+}) => {
+  return async (dispatch: RTDispatch) => {
+    const user = await axios.post('/register', { authData })
+    if (user && user.data) {
       dispatch(openSnackbarA('Registered! Welcome To Mantella!', 'success'))
 
-      dispatch({ type: 'REGISTER', user: authUser } as any)
-
-      dispatch(initializeAuthState(user))
+      dispatch({ type: 'REGISTER', user: user } as any)
     } else {
       dispatch(openSnackbarA('Could not Register', 'error'))
     }
   }
 }
 
-export const loginA = (user: UserFieldsFragment) => {
-  return (dispatch: RTDispatch) => {
-    if (user) {
-      dispatch({type: 'LOGIN', user: user} as any)
+export const loginA = (authData: { email: string; password: string }) => {
+  return async (dispatch: RTDispatch) => {
+    const user = await axios.post('/login', { authData })
+    if (user && user.data) {
+      dispatch({ type: 'LOGIN', user: user } as any)
       dispatch(openSnackbarA('Logged in Successfully', 'success'))
-
-      dispatch(initializeAuthState(user))
     } else {
       dispatch(openSnackbarA('Could not Login', 'error'))
+    }
+  }
+}
+
+export const logoutA = () => {
+  return async (dispatch: RTDispatch) => {
+    const result = await axios.post('/logout')
+
+    if (result && result.status === 200) {
+      dispatch({ type: 'LOGOUT' })
+      dispatch(openSnackbarA('Logged out', 'success'))
+    } else {
+      dispatch(openSnackbarA('Could not log out', 'error'))
     }
   }
 }
@@ -42,4 +54,9 @@ export type TLogin = {
   type: 'LOGIN'
   user: TUser
 }
-export type UserAction = TRegister | TLogin
+
+export type TLogout = {
+  type: 'LOGOUT'
+}
+
+export type UserAction = TRegister | TLogin | TLogout

@@ -5,6 +5,6 @@
   },
   "watch": ["src"],
   "ext": "ts",
-  "ignore": ["src/**/*.spec.ts"],
+  "ignore": ["src/**/*.spec.ts", "src/__tests__/**/*"],
   "exec": "ts-node ./src/index.ts"
 }

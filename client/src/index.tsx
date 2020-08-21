@@ -9,19 +9,14 @@ import { store } from './store/store'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { AuthRender } from './components/Auth/Auth'
 import { NoMatch } from './components/NoMatch/NoMatch'
-import { Fab, CircularProgress } from '@material-ui/core'
-import { Timer } from '@material-ui/icons'
+import { CircularProgress } from '@material-ui/core'
 import { About } from './components/Landing/About'
 
 import { Header } from './components/Header'
-import { WelcomeDialog } from './components/Welcome/WelcomeDialog'
 import { SnackbarRoot } from './components/utils/SnackbarRoot'
-import { ApolloProvider } from 'react-apollo'
-import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks'
-import { print } from 'graphql'
 import { loginA } from './store/actions/auth'
-import { Mutation } from './graphql/types'
-import { fetchQuery } from './API/initialize'
+
+import axios from 'axios'
 
 const secondary = '#0336FF'
 const primary = '#00838f'
@@ -48,32 +43,18 @@ export const fabStyle: CSSProperties = {
   zIndex: 999
 }
 
-import { openSnackbarA } from './store/actions/snackbar'
-import { GQL_LOGIN_WITH_COOKIE } from './graphql/mutations/auth'
-import { client } from './apollo'
 import { PublicOnlyRoute, PrivateRoute } from './components/utils/Routing'
 import { Settings } from './components/Settings/Settings'
-import { Dashboard } from './components/Dashboard/Dashboard'
-import { RecipeFinder } from './components/RecipeFinder/RecipeFinder'
 
 const Router = () => {
-  const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
   window.onload = async () => {
     try {
-      const {
-        loginWithCookie
-      }: { loginWithCookie: Mutation['loginWithCookie'] } = await fetchQuery(
-        print(GQL_LOGIN_WITH_COOKIE)
-      )
-
-      if (loginWithCookie && loginWithCookie.user) {
-        store.dispatch(loginA(loginWithCookie.user as any) as any)
-      } else {
-        store.dispatch(openSnackbarA('Hey there, Welcome!', 'standard'))
+      const data = await axios.post('/user/login')
+      if (data && data.data && data.data.user) {
+        store.dispatch(loginA(data.data.user) as any)
       }
-
       setLoaded(true)
     } catch (err) {
       setLoaded(true)
@@ -84,18 +65,7 @@ const Router = () => {
     <HashRouter>
       <>
         <Header />
-        <WelcomeDialog />
-        {!open && (
-          <>
-            <Fab
-              style={fabStyle}
-              color="secondary"
-              onClick={() => setOpen(true)}
-            >
-              <Timer />
-            </Fab>
-          </>
-        )}
+
         {loaded ? (
           <Switch>
             <PrivateRoute
@@ -110,19 +80,13 @@ const Router = () => {
               component={AuthRender}
               componentProps={{ authType: 'Login' }}
             />
-            <Route exact path="/recipes" component={RecipeFinder} />
             <PublicOnlyRoute
               exact
               path="/register"
               component={AuthRender}
               componentProps={{ authType: 'Register' }}
             />
-            <PrivateRoute
-              exact
-              path="/dashboard"
-              component={Dashboard}
-              componentProps={{}}
-            />
+
             <PublicOnlyRoute
               exact
               path="/"
@@ -161,14 +125,10 @@ const Router = () => {
 export const Wrapper = () => {
   return (
     <Provider store={store}>
-      <ApolloProvider client={client}>
-        <ApolloHooksProvider client={client}>
-          <MuiThemeProvider theme={theme}>
-            <SnackbarRoot />
-            <Router />
-          </MuiThemeProvider>
-        </ApolloHooksProvider>
-      </ApolloProvider>
+      <MuiThemeProvider theme={theme}>
+        <SnackbarRoot />
+        <Router />
+      </MuiThemeProvider>
     </Provider>
   )
 }

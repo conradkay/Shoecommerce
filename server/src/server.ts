@@ -1,8 +1,7 @@
-import express, { Express, Request } from 'express'
+import express, { Express } from 'express'
 import * as bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
-import { gqlServer } from './graphql/graphql'
 const morgan = require('morgan')
 import path from 'path'
 import jwt from 'express-jwt'
@@ -21,15 +20,6 @@ app.use(
   })
 )
 
-morgan.token('graphql-query', (req: Request) => {
-  const { variables } = req.body
-
-  return `GRAPHQL ${
-    Object.keys(variables || {}).length
-      ? `Variables: ${JSON.stringify(variables)}`
-      : ''
-  }`
-})
 app.use(morgan(':method :status :response-time ms :graphql-query'))
 app.use(bodyParser.json())
 app.use(cookieParser())
@@ -53,12 +43,6 @@ const auth = jwt({
 
 app.use(auth)
 app.use(router)
-
-gqlServer.applyMiddleware({
-  app,
-  path: '/graphql',
-  cors: false
-})
 
 app.use(express.static(path.join(__dirname, '/../../client/build')))
 

@@ -1,9 +1,7 @@
 import React from 'react'
-import {createStyles, withStyles} from '@material-ui/core/styles'
-import {Button, Typography, WithStyles} from '@material-ui/core'
-import {Pricing} from './Pricing'
-import {Helmet} from 'react-helmet'
-import {FeatureGallery} from './FeatureGallery'
+import { createStyles, withStyles } from '@material-ui/core/styles'
+import { Button, Typography, WithStyles } from '@material-ui/core'
+import { Helmet } from 'react-helmet'
 
 const styles = () =>
   createStyles({
@@ -102,16 +100,6 @@ export const About = withStyles(styles)((props: TProps) => {
             </a>
           </div>
         </div>
-
-        <Typography variant="h4" align="center" gutterBottom>
-          Pricing
-        </Typography>
-        <Pricing />
-        <Typography style={{ marginTop: 20 }} variant="h4" align="center">
-          Features
-        </Typography>
-
-        <FeatureGallery />
       </div>
     </div>
   )

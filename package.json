@@ -8,9 +8,7 @@
     "server": "npm start --prefix server",
     "build": "npm i --prefix server && cd client && npm install && npm run build",
     "client": "npm start --prefix client",
-    "dev": "concurrently --kill-others-on-fail  \"npm run server\" \"npm run client\" ",
-    "gen": "npm run graphql-gen --prefix server && npm run graphql-gen --prefix client",
-    "git-fix": "find .git/objects/ -type f -empty | xargs rm && git fetch -p && git fsck --full"
+    "dev": "concurrently --kill-others-on-fail  \"npm run server\" \"npm run client\" "
   },
   "engines": {
     "node": "10.16.1",
@@ -27,13 +25,10 @@
   },
   "homepage": "https://phillibo.herokuapp.com",
   "dependencies": {
-    "@playlyfe/gql": "^2.6.1",
-    "@types/node": "^12.6.9",
-    "concurrently": "^4.1.0",
-    "copyfiles": "^2.1.0",
-    "iexcloud_api_wrapper": "^1.1.5",
-    "nodemon": "^1.19.1",
-    "react-scripts": "^2.1.8",
-    "typescript": "^3.5.3"
-  }
+    "concurrently": "^4.1.2",
+    "copyfiles": "^2.3.0",
+    "nodemon": "^1.19.4",
+    "react-scripts": "^2.1.8"
+  },
+  "devDependencies": {}
 }
