@@ -7,6 +7,7 @@ import path from 'path'
 import jwt from 'express-jwt'
 import cors from 'cors'
 import router from './routes/routes'
+import shoeRouter from './routes/routes'
 
 require('dotenv').config()
 const app: Express = express()
@@ -20,7 +21,7 @@ app.use(
   })
 )
 
-app.use(morgan(':method :status :response-time ms :graphql-query'))
+app.use(morgan(':method :status :response-time ms'))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -38,11 +39,13 @@ if (!process.env.PRIVATE) {
 }
 const auth = jwt({
   secret: process.env.PRIVATE,
+  algorithms: ['HS256'],
   credentialsRequired: false
 })
 
 app.use(auth)
 app.use(router)
+app.use(shoeRouter)
 
 app.use(express.static(path.join(__dirname, '/../../client/build')))
 

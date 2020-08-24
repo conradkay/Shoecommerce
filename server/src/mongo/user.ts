@@ -2,19 +2,16 @@ import { prop, getModelForClass } from '@typegoose/typegoose'
 import { compare } from 'bcryptjs'
 export class User {
   @prop({ required: true })
-  public id!: string
-
-  @prop({ required: true })
-  public profileImg!: string
-
-  @prop({ required: true })
   public username!: string
 
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   public email!: string
 
   @prop({ required: true })
   public password!: string
+
+  @prop({ required: true })
+  public _id!: string
 }
 
 export const UserModel = getModelForClass(User)
