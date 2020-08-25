@@ -20,6 +20,7 @@ import { Settings } from './components/Settings/Settings'
 import { Shoe } from './components/ShoeList/Shoe'
 import axios from 'axios'
 import { overWriteShoesA } from './store/actions/shoes'
+import { Cart } from './components/Cart/Cart'
 
 const secondary = '#0336FF'
 const primary = '#00838f'
@@ -104,6 +105,9 @@ const Router = () => {
               component={ShoeList}
               componentProps={() => ({})}
             />
+            <Route path="/cart">
+              <Cart />
+            </Route>
             <Route path="/shoe/:shoeId">
               <Shoe />
             </Route>

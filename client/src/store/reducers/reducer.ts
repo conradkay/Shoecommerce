@@ -1,3 +1,4 @@
+import { cartReducer } from './cart'
 import { ReducerCases, TAction } from '../actions/types'
 import { combineReducers, Reducer } from 'redux'
 import { TState } from '../../types/state'
@@ -26,5 +27,6 @@ export const snackbarReducer = createReducer<TState['snackbar']>(
 export const reducer: Reducer<TState, TAction> = combineReducers({
   snackbar: snackbarReducer,
   user: userReducer,
-  shoes: shoesReducer
+  shoes: shoesReducer,
+  cart: cartReducer
 })

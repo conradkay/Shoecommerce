@@ -10,7 +10,7 @@ export const registerA = (authData: {
 }) => {
   return async (dispatch: RTDispatch) => {
     const user = await axios.post('http://localhost:4000/register', {
-      authData
+      ...authData
     })
     if (user && user.data) {
       dispatch(openSnackbarA('Registered! Welcome To Mantella!', 'success'))
@@ -24,7 +24,9 @@ export const registerA = (authData: {
 
 export const loginA = (authData: { email: string; password: string }) => {
   return async (dispatch: RTDispatch) => {
-    const user = await axios.post('http://localhost:4000/login', { authData })
+    const user = await axios.post('http://localhost:4000/login', {
+      ...authData
+    })
     if (user && user.data) {
       dispatch({ type: 'LOGIN', user: user } as any)
       dispatch(openSnackbarA('Logged in Successfully', 'success'))

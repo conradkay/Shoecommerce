@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import {
   Avatar,
   Button,
@@ -30,14 +30,14 @@ const Auth = ({ authType, openSnackbar, classes, register, login }: TProps) => {
   const [confirmText, setConfirmText] = useState('')
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
   const onSubmit = () => {
     setLoading(true)
     if (authType === 'Register') {
-      registerA({ username, email, password })
+      dispatch(registerA({ username, email, password }))
     } else {
-      loginA({ email, password })
+      dispatch(loginA({ email, password }))
     }
-    window.location.hash = '#/dashboard'
   }
 
   return (
@@ -52,7 +52,7 @@ const Auth = ({ authType, openSnackbar, classes, register, login }: TProps) => {
       <main className={classes.layout}>
         <form
           autoComplete="on"
-          onSubmit={e => {
+          onSubmit={(e) => {
             e.preventDefault()
             onSubmit()
           }}
@@ -79,7 +79,7 @@ const Auth = ({ authType, openSnackbar, classes, register, login }: TProps) => {
                 fullWidth
                 required
                 autoComplete="off"
-                onChange={e => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 value={username}
                 label="Full Name"
               />
@@ -91,7 +91,7 @@ const Auth = ({ authType, openSnackbar, classes, register, login }: TProps) => {
               required
               autoComplete="on"
               value={email}
-              onChange={e => {
+              onChange={(e) => {
                 setEmail(e.target.value)
               }}
               label="Email"
@@ -108,7 +108,7 @@ const Auth = ({ authType, openSnackbar, classes, register, login }: TProps) => {
               type="password"
               id="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
             {/* confirm password */}
             {authType === 'Register' && (
@@ -121,7 +121,7 @@ const Auth = ({ authType, openSnackbar, classes, register, login }: TProps) => {
                 label="Confirm Password"
                 error={confirmText !== password}
                 value={confirmText}
-                onChange={e => setConfirmText(e.target.value)}
+                onChange={(e) => setConfirmText(e.target.value)}
               />
             )}
             {/* submit button */}
@@ -193,8 +193,5 @@ const actionCreators = {
 }
 
 export const AuthRender = withStyles(formStyles)(
-  connect(
-    null,
-    actionCreators
-  )(Auth as any)
+  connect(null, actionCreators)(Auth as any)
 )

@@ -13,13 +13,13 @@ export const ShoeList = connect(
   null
 )((props: ReturnType<typeof mapState>) => {
   return props.shoes.length ? (
-    <Grid container spacing={4}>
+    <Grid container classes={{ root: 'shoelist-grid-root' }} spacing={4}>
       <div
         style={{
           display: 'flex',
           flexWrap: 'wrap',
           minWidth: 300,
-          width: '100%'
+          width: 'calc(100%)'
         }}
       >
         {props.shoes.map((shoe, index) => (
