@@ -11,5 +11,6 @@ export const defaultSnackbar: TSnackbar = {
 export const defaultState: TState = {
   user: null,
   snackbar: defaultSnackbar,
-  shoes: []
+  shoes: [],
+  cart: []
 }

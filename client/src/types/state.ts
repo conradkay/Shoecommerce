@@ -7,13 +7,13 @@ export type TUser = {
 export type TShoe = {
   _id: string
   name: string
-  sizesAvailable: number[]
+  sizesAvailable: Array<[number, number]>
   cardImg: string
   fullImgs: string[]
   details: string
-  price: number
   release: string // in a string bc why not
   brand: string // Nike / Adidas / etc
+  color: string // colour moment
 }
 
 export type TVariant = 'success' | 'warning' | 'error' | 'standard'
@@ -24,7 +24,13 @@ export type TSnackbar = {
   variant: TVariant
 }
 
+export type CartItem = {
+  shoeId: string
+  size: number
+}
+
 export type TState = {
+  cart: CartItem[]
   snackbar: TSnackbar
   user: TUser | null
   shoes: TShoe[]

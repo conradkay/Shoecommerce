@@ -1,8 +1,11 @@
 import { UserAction } from './auth'
 import { SnackbarAction } from './snackbar'
 import { ShoeAction } from './shoes'
+import { CartAction } from './cart'
 
-export type TAction = Readonly<SnackbarAction | UserAction | ShoeAction>
+export type TAction = Readonly<
+  SnackbarAction | UserAction | ShoeAction | CartAction
+>
 
 export type ActionTypes = TAction['type']
 

@@ -19,7 +19,8 @@ import {
   Drawer,
   Tab,
   Avatar,
-  Tooltip
+  Tooltip,
+  Badge
 } from '@material-ui/core'
 import { Trail } from 'react-spring/renderprops'
 import {
@@ -27,7 +28,8 @@ import {
   PieChart,
   Help,
   Settings,
-  Restaurant
+  Restaurant,
+  ShoppingCart
 } from '@material-ui/icons'
 import { Link as NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -58,10 +60,25 @@ const noAuthItems = [
     label: 'Register',
     pathname: '/register',
     menuIcon: HowToReg
+  },
+  {
+    label: 'Cart',
+    pathname: '/cart',
+    menuIcon: ShoppingCart
   }
 ]
 
 const authItems = [
+  {
+    label: 'Cart',
+    pathname: '/cart',
+    menuIcon: ShoppingCart
+  },
+  {
+    label: 'Shoes',
+    pathname: '/',
+    menuIcon: Help
+  },
   { label: 'Settings', pathname: '/settings', menuIcon: Settings },
   {
     label: 'Dashboard',
@@ -185,19 +202,37 @@ const Topbar = (props: TProps) => {
                     indicatorColor="primary"
                     textColor="primary"
                   >
-                    {MenuItems.map((item, index) => (
-                      <Tab
-                        disabled={
-                          window.location.hash.slice(1) === item.pathname
-                        }
-                        style={{ minWidth: 96 }}
-                        key={index}
-                        to={item.pathname}
-                        component={NavLink}
-                        classes={{ root: classes.tabItem }}
-                        label={item.label}
-                      />
-                    ))}
+                    {MenuItems.map((item, index) =>
+                      item.label === 'Cart' ? (
+                        <Tab
+                          disabled={
+                            window.location.hash.slice(1) === item.pathname
+                          }
+                          style={{ minWidth: 96 }}
+                          key={index}
+                          to={item.pathname}
+                          component={NavLink}
+                          classes={{ root: classes.tabItem }}
+                          icon={
+                            <Badge badgeContent={4} color="primary">
+                              <ShoppingCart />
+                            </Badge>
+                          }
+                        />
+                      ) : (
+                        <Tab
+                          disabled={
+                            window.location.hash.slice(1) === item.pathname
+                          }
+                          style={{ minWidth: 96 }}
+                          key={index}
+                          to={item.pathname}
+                          component={NavLink}
+                          classes={{ root: classes.tabItem }}
+                          label={item.label}
+                        />
+                      )
+                    )}
                   </Tabs>
                 </div>
 

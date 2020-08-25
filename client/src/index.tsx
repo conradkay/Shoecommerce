@@ -57,7 +57,6 @@ const Router = () => {
       }
       setLoaded(true)
     } catch (err) {
-      console.log('catch catch 58', err)
       setLoaded(true)
     }
     try {
@@ -69,7 +68,6 @@ const Router = () => {
       }
       setLoaded(true)
     } catch (err) {
-      console.log('CATCH CATCH 59', err)
       setLoaded(true)
     }
   }
